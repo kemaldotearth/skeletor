@@ -10,6 +10,7 @@
     "tsc": "tsc",
     "lint": "eslint '**/*.{js,ts,tsx}' --fix",
     "prettier": "prettier --write .",
+    "prettier-check": "prettier --check .",
     "build": "tsc && chmod",
     "chmod": "chmod u+x ./bin/index.js"
   },

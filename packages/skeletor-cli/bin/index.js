@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-"use strict";
+'use strict';
 var __awaiter =
   (this && this.__awaiter) ||
   function (thisArg, _arguments, P, generator) {
@@ -20,7 +20,7 @@ var __awaiter =
       }
       function rejected(value) {
         try {
-          step(generator["throw"](value));
+          step(generator['throw'](value));
         } catch (e) {
           reject(e);
         }
@@ -33,12 +33,12 @@ var __awaiter =
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
-Object.defineProperty(exports, "__esModule", { value: true });
-const commander_1 = require("commander");
+Object.defineProperty(exports, '__esModule', { value: true });
+const commander_1 = require('commander');
 const run = () =>
   __awaiter(void 0, void 0, void 0, function* () {
     const program = new commander_1.Command();
-    program.argument("test", "Runs a quick little test script").parse();
-    console.log("Testing command...");
+    program.argument('test', 'Runs a quick little test script').parse();
+    console.log('Testing command...');
   });
 run();

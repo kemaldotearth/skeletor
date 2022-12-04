@@ -1,13 +1,9 @@
 #!/usr/bin/env node
+import { Command } from 'commander';
 
-import { Command } from "commander";
+const program = new Command();
 
-const run = async () => {
-  const program = new Command();
-
-  program.argument("test", "Runs a quick little test script").parse();
-
-  console.log("Testing command...");
-};
-
-run();
+program.description(
+  'A simple CLI tool for generating front end design system packages.',
+);
+program.option('--verbose', 'verbose logging');
