@@ -4,7 +4,8 @@
   "description": "A simple CLI tool for generating front end design system packages.",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc"
   },
   "author": "kemaldotearth",
   "license": "UNLICENCED"
