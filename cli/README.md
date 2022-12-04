@@ -11,16 +11,16 @@ This project is an attempt to build a CLI tool that can bundle all your favourit
 
 Potential uses:
 - Bootstrap a simple UI library with all deps and opinionated folder structure.
-- Down the line perhaps add support for things like Headless UI or Radix.
+  - Down the line perhaps add support for things like Headless UI or Radix.
 - Generate items such as design tokens.
-- This could be done by providing hex values as input and Skeletor generating it toward a colour scale.
-- Something else?
+  - This could be done by providing hex values as input and Skeletor generating it toward a colour scale.
+- Quickly bootstrap a design system mono repo using something like Turbo or T3 Stack Turbo?
 
 The project is **currently WIP**. 
 
 
 ## Contributing
-For the moment contributions are not open, but open for ideas on what else this simple CLI tool could potentially take care of.
+The project is open for contributions, but it is currently in an exploratory state. Open for ideas on what else this tiny tool can take care of.
 
 Contribution Guide (Coming soon!)
 
