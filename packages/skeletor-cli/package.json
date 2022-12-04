@@ -7,7 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "lint": "eslint '**/*.{js,ts,tsx}' --fix",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "build": "tsc && chmod",
+    "chmod": "chmod u+x ./bin/index.js"
+  },
+  "bin": {
+    "skeletor": "./bin/index.js"
   },
   "author": "kemaldotearth",
   "license": "UNLICENCED",
