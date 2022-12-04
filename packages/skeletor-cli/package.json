@@ -1,0 +1,38 @@
+{
+	"name": "skeletor-cli",
+	"description": "A simple CLI tool for generating front end design system packages.",
+	"version": "0.0.1",
+	"license": "UNLICENSED",
+	"bin": {
+		"skeletor-cli": "index.js",
+		"skeletor": "index.js"
+	},
+	"author": {
+		"name": "@kemal.earth",
+		"email": "yes@iamerd.xyz",
+		"url": "https://kemal.earth"
+	},
+	"keywords": [
+		"skeletor-cli",
+		"@kemal.earth"
+	],
+	"files": [
+		"index.js",
+		"utils"
+	],
+	"scripts": {
+		"format": "prettier --write \"./**/*.{js,json}\""
+	},
+	"dependencies": {
+		"chalk": "^4.1.2",
+		"cli-alerts": "^1.2.2",
+		"cli-handle-error": "^4.4.0",
+		"cli-handle-unhandled": "^1.1.1",
+		"cli-meow-help": "^3.1.0",
+		"cli-welcome": "^2.2.2",
+		"meow": "^9.0.0"
+	},
+	"devDependencies": {
+		"prettier": "^2.8.0"
+	}
+}
