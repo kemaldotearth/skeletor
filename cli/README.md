@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>@skeletor/cli</h1>
+  <h1>skeletor-cli</h1>
   <h3>A simple CLI tool for generating front end design system packages.</h3>
   <img src="https://img.shields.io/badge/status-%F0%9F%9A%A7%20wip-yellow" alt="Current project status..." />
 </div>

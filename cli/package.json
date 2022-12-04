@@ -1,5 +1,5 @@
 {
-  "name": "@skeletor/cli",
+  "name": "skeletor-cli",
   "version": "0.1.0",
   "description": "A simple CLI tool for generating front end design system packages.",
   "author": "kemaldotearth",
@@ -17,6 +17,7 @@
   "bin": {
     "skeletor": "./bin/index.js"
   },
+  "files": ["bin"],
   "devDependencies": {
     "@types/node": "^18.11.10",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
