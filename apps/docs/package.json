@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3001",
+    "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -16,7 +16,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "eslint": "7.32.0",
-    "eslint-config-custom": "*",
+    "@skeletor/eslint-config": "*",
     "tsconfig": "*",
     "@types/node": "^17.0.12",
     "@types/react": "^18.0.22",
