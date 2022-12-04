@@ -4,20 +4,21 @@
   "description": "A simple CLI tool for generating front end design system packages.",
   "author": "kemaldotearth",
   "license": "UNLICENCED",
-  "main": "index.ts",
+  "main": "bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "lint": "eslint '**/*.{js,ts,tsx}' --fix",
     "prettier": "prettier --write .",
     "prettier-check": "prettier --check .",
-    "build": "tsc && chmod",
+    "build": "tsc --noEmit ./src/index.ts && esbuild src/index.ts --bundle --platform=node --format=cjs --outfile=bin/index.js && chmod",
     "chmod": "chmod u+x ./bin/index.js"
   },
   "bin": {
     "skeletor": "./bin/index.js"
   },
   "devDependencies": {
+    "@types/node": "^18.11.10",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.29.0",
@@ -27,6 +28,7 @@
   },
   "dependencies": {
     "chalk": "^4.1.2",
-    "commander": "^9.4.1"
+    "commander": "^9.4.1",
+    "esbuild": "^0.15.17"
   }
 }
