@@ -1,6 +1,6 @@
 {
   "name": "@kemal.earth/skeletor-cli",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha",
   "description": "A simple CLI tool for generating front end design system packages.",
   "author": "kemaldotearth",
   "license": "UNLICENCED",
