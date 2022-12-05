@@ -128,12 +128,18 @@ program
     fs.mkdirSync(`${libName}/src`);
     fs.mkdirSync(`${libName}/src/components`);
     fs.mkdirSync(`${libName}/src/components/Button`);
+    if (includeTailwind) {
+      fs.mkdirSync(`${libName}/src/styles`);
+    }
 
     // 5. Create an index.ts file
     console.log('Adding index.ts and first component...');
     fs.writeFileSync(
       `${libName}/src/index.ts`,
-      `export { default as Button, ButtonProps } from './components/Button/index.tsx';`,
+      `
+      ${includeTailwind && "import './styles/index.css';"}
+      export { default as Button, ButtonProps } from './components/Button/index.tsx';
+      `,
     );
     fs.writeFileSync(
       `${libName}/src/components/Button/index.tsx`,
@@ -151,6 +157,16 @@ program
       };
     `,
     );
+    if (includeTailwind) {
+      fs.writeFileSync(
+        `${libName}/src/styles/index.css`,
+        `
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+      `,
+      );
+    }
 
     // 6. Create a rollup.config.js file
     console.log('Adding rollup.config.js...');
@@ -189,6 +205,13 @@ program
             external(),
             resolve(),
             commonjs(),
+            ${includeTailwind(`postcss({ 
+              extensions: ['.css'],
+                minimize: true,
+                inject: {
+                  insertAt: 'top',
+                },
+            }),`)}
             typescript({
               tsconfig: './tsconfig.json',
             }),
@@ -229,6 +252,35 @@ program
       }
     `,
     );
+    if (includeTailwind) {
+      fs.writeFileSync(
+        `${libName}/postcss.config.js`,
+        `
+        module.exports = {
+          plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
+          },
+        };
+      `,
+      );
+      fs.writeFileSync(
+        `${libName}/tailwind.config.js`,
+        `
+        module.exports = {
+          purge: ['./src/**/*.{js,jsx,ts,tsx}'],
+          darkMode: false, // or 'media' or 'class'
+          theme: {
+            extend: {},
+          },
+          variants: {
+            extend: {},
+          },
+          plugins: [],
+        }; 
+      `,
+      );
+    }
 
     console.log('Package generated! 🎉');
 
