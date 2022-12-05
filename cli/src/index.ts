@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
+import chalkAnimation from 'chalk-animation';
 import fs from 'fs';
 // import { promiseResolve } from './utils/helpers';
 import { updateSpinnerText, spinnerSuccess } from './utils/spinners';
