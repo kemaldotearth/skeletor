@@ -126,10 +126,10 @@ program
     console.log('Adding index.ts and first component...');
     fs.writeFileSync(
       `${libName}/src/index.ts`,
-      `export { default as Button } from './components/Button';`,
+      `export { default as Button, ButtonProps } from './components/Button/index.tsx';`,
     );
     fs.writeFileSync(
-      `${libName}/src/components/Button/button.tsx`,
+      `${libName}/src/components/Button/index.tsx`,
       `
       import React from 'react';
 
@@ -223,7 +223,6 @@ program
     );
 
     console.log('Package generated! 🎉');
-    console.log(`cd ${libName} && npm install`);
 
     updateSpinnerText(`cd ${libName} && npm install`);
     spinnerSuccess();
