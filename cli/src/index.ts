@@ -24,13 +24,14 @@ program.command('generate:tokens').action(async () => {
 
 program
   .command('generate:ui')
-  .option('--name -n', 'Name of the package.')
+  .option('--with-tailwind', 'Adds Tailwind CSS to your package.')
   .action(async () => {
     updateSpinnerText('Generating UI...');
     // await promiseResolve(3000);
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const libName = 'skeletor-ui';
+    const includeTailwind = program.opts().withTailwind;
 
     // 1. Create a directory for the package
     console.log('Creating directory...');
@@ -75,6 +76,12 @@ program
             'rollup-plugin-peer-deps-external': '^2.2.4',
             'rollup-plugin-dts': '^3.0.1',
             webpack: '^5.52.1',
+            ...includeTailwind({
+              tailwindcss: '^2.2.19',
+              postcss: '^8.3.11',
+              autoprefixer: '^10.3.7',
+              'rollup-plugin-postcss': '^4.0.0',
+            }),
           },
         },
         null,
@@ -157,6 +164,7 @@ program
       import dts from 'rollup-plugin-dts';
       import babel from '@rollup/plugin-babel';
       import pkg from './package.json';
+      ${includeTailwind('import postcss from "rollup-plugin-postcss";')}
 
       export default [
         {
