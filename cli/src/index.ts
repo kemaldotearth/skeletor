@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
+import fs from 'fs';
 // import { promiseResolve } from './utils/helpers';
 import { updateSpinnerText, spinnerSuccess } from './utils/spinners';
 
@@ -18,6 +19,15 @@ program.command('generate:tokens').action(async () => {
 
   spinnerSuccess();
   console.log('wow your tokens!');
+});
+
+program.command('generate:ui').action(async () => {
+  updateSpinnerText('Generating UI...');
+  // await promiseResolve(3000);
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
+  spinnerSuccess();
+  console.log('wow your UI!');
 });
 
 const run = async () => {

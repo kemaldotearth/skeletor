@@ -22,6 +22,7 @@
     "bin"
   ],
   "devDependencies": {
+    "@types/chalk-animation": "^1.6.1",
     "@types/node": "^18.11.10",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
@@ -35,6 +36,7 @@
     "chalk-animation": "^2.0.3",
     "commander": "^9.4.1",
     "esbuild": "^0.15.17",
+    "fs": "^0.0.1-security",
     "ora": "^6.1.2"
   }
 }
