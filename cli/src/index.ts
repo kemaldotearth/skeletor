@@ -84,7 +84,7 @@ program
     updateSpinnerText('🧻 Adding a rollup.config.js...');
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    createRollupConfig(libName, includeTailwind, includeStyledComponents);
+    createRollupConfig(libName, includeTailwind);
 
     // 7. Create extra files
     if (includeTailwind) {
@@ -95,11 +95,16 @@ program
       createPostCssConfig(libName);
     }
 
+    if (includeStyledComponents) {
+      updateSpinnerText('💅 Setting up Styled Components...');
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+    }
+
     updateSpinnerText('💀  Wrapping up!');
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     createGitIgnore(libName);
-    createBabelConfig(libName);
+    createBabelConfig(libName, includeStyledComponents);
 
     // 8. Create a README.md file
     updateSpinnerText(`📄 Oh, don't forget to add a README.md!`);

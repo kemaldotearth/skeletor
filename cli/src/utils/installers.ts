@@ -50,8 +50,8 @@ export const createPackageJson = (
           }),
           ...(includeStyledComponents && {
             'styled-components': '^5.3.3',
-            'rollup-plugin-styled-components': '^1.5.1',
             '@types/styled-components': '^5.1.15',
+            'babel-plugin-styled-components': '^1.13.3',
           }),
         },
       },
@@ -86,7 +86,7 @@ export const createTsConfig = (libName: string) => {
           skipLibCheck: true,
           emitDeclarationOnly: true,
         },
-        include: ['src/**/*'],
+        include: ['src/**/*.ts', 'src/**/*.tsx'],
         exclude: ['node_modules', 'dist'],
       },
       null,
@@ -111,9 +111,8 @@ export const createFolderStructure = (
 export const createIndexFile = (libName: string, includeTailwind: boolean) => {
   fs.writeFileSync(
     `${libName}/src/index.ts`,
-    `
-    ${includeTailwind && `import './styles/globals.css';`}
-    export { default as Button, ButtonProps } from './components/Button/index.tsx';
+    `${includeTailwind ? `import './styles/globals.css';` : ''}
+  export { default as Button, ButtonProps } from './components/Button/index';
     `,
   );
 };
@@ -125,40 +124,38 @@ export const createButtonComponent = (
   fs.writeFileSync(
     `${libName}/src/components/Button/index.tsx`,
     `
-    import React from 'react';
-    ${includeStyledComponents && `import styled from 'styled-components';`}
+import React from 'react';
+${includeStyledComponents && `import styled from 'styled-components';`}
 
-    export interface ButtonProps {
-      label: string;
-    }
+export interface ButtonProps {
+  label: string;
+}
 
+${
+  includeStyledComponents &&
+  `
+const StyledButton = styled.button\`
+  background-color: #0000FF;
+  color: #FFFFFF;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+\`;
+`
+}
+
+const Button = ({ label }: ButtonProps) => {
+  return (
     ${
-      includeStyledComponents &&
-      `
-      const StyledButton = styled.button\`
-        background-color: #0000FF;
-        color: #FFFFFF;
-        padding: 8px 12px;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-      \`;
-    `
+      includeStyledComponents
+        ? `<StyledButton>{label}</StyledButton>`
+        : `<button>{label}</button>`
     }
+  );
+};
 
-    export const Button = ({ label }: ButtonProps) => {
-      return (
-        ${
-          includeStyledComponents
-            ? `
-          <StyledButton>{label}</StyledButton>
-        `
-            : `
-          <button>{label}</button>
-        `
-        }
-      );
-    };
+export default Button;
   `,
   );
 };
@@ -167,9 +164,9 @@ export const createGlobalsCss = (libName: string) => {
   fs.writeFileSync(
     `${libName}/src/styles/globals.css`,
     `
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
   `,
   );
 };
@@ -178,9 +175,9 @@ export const createClassNamesUtil = (libName: string) => {
   fs.writeFileSync(
     `${libName}/src/utils/classnames.ts`,
     `
-    export function classnames(...classes: unknown[]) {
-      return classes.filter(Boolean).join(' ');
-    }
+export function classnames(...classes: unknown[]) {
+  return classes.filter(Boolean).join(' ');
+}
   `,
   );
 };
@@ -188,7 +185,7 @@ export const createClassNamesUtil = (libName: string) => {
 export const createRollupConfig = (
   libName: string,
   includeTailwind: boolean,
-  includeStyledComponents: boolean,
+  // includeStyledComponents: boolean,
 ) => {
   fs.writeFileSync(
     `${libName}/rollup.config.js`,
@@ -201,10 +198,6 @@ export const createRollupConfig = (
     import babel from '@rollup/plugin-babel';
     import pkg from './package.json';
     ${includeTailwind && `import postcss from "rollup-plugin-postcss";`}
-    ${
-      includeStyledComponents &&
-      `import styledComponents from 'rollup-plugin-styled-components';`
-    }
 
     export default [
       {
@@ -238,8 +231,7 @@ export const createRollupConfig = (
                 insertAt: 'top',
               },
           }),`
-          }
-          ${includeStyledComponents && `styledComponents(),`}
+          },
           typescript({
             tsconfig: './tsconfig.json',
           }),
@@ -299,48 +291,55 @@ export const createGitIgnore = (libName: string) => {
     `${libName}/.gitignore`,
     `# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-  # dependencies
-  /node_modules
-  /.pnp
-  .pnp.js
-  
-  # testing
-  /coverage
-  
-  # next.js
-  /.next/
-  /out/
-  
-  # production
-  /build
-  
-  # misc
-  .DS_Store
-  *.pem
-  
-  # debug
-  npm-debug.log*
-  yarn-debug.log*
-  yarn-error.log*
-  
-  # local env files
-  .env.local
-  .env.development.local
-  .env.test.local
-  .env.production.local
-  
-  # vercel
-  .vercel
-`,
+    # dependencies
+    /node_modules
+    /.pnp
+    .pnp.js
+    
+    # testing
+    /coverage
+    
+    # next.js
+    /.next/
+    /out/
+    
+    # production
+    /build
+    
+    # misc
+    .DS_Store
+    *.pem
+    
+    # debug
+    npm-debug.log*
+    yarn-debug.log*
+    yarn-error.log*
+    
+    # local env files
+    .env.local
+    .env.development.local
+    .env.test.local
+    .env.production.local
+    
+    # vercel
+    .vercel
+  `,
   );
 };
 
-export const createBabelConfig = (libName: string) => {
+export const createBabelConfig = (
+  libName: string,
+  includeStyledComponents: boolean,
+) => {
   fs.writeFileSync(
     `${libName}/.babelrc`,
     `
     {
-      "presets": ["@babel/preset-env", "@babel/preset-react"]
+      "presets": [
+        "@babel/preset-env", 
+        "@babel/preset-react",
+        ${includeStyledComponents && `"babel-plugin-styled-components",`}
+      ]
     }
   `,
   );
