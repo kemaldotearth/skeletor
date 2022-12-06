@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { create } from 'domain';
 import * as fs from 'fs';
 import {
   createPackageJson,

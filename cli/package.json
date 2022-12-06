@@ -1,6 +1,6 @@
 {
   "name": "@kemal.earth/skeletor-cli",
-  "version": "0.1.2-alpha",
+  "version": "0.1.3-alpha",
   "description": "A simple CLI tool for generating front end design system packages.",
   "author": "kemaldotearth",
   "license": "UNLICENCED",
@@ -29,7 +29,8 @@
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.0"
+    "prettier": "^2.8.0",
+    "tsconfig": "*"
   },
   "dependencies": {
     "chalk": "^4.1.2",
