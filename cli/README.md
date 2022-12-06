@@ -1,31 +1,68 @@
 <div align="center">
-  <h1>skeletor-cli</h1>
-  <h3>A simple CLI tool for generating front end design system packages.</h3>
+  <a href="https://github.com/kemaldotearth/skeletor">
+    <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/325/skull_1f480.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">skeletor-cli</h3>
+  <p align="center">
+    A simple CLI tool for generating front end design system packages.
+    <br />
+    <br />
+    <a href="https://github.com/kemaldotearth/skeletor/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/kemaldotearth/skeletor/issues">Request Feature</a>
+  </p>
 </div>
 
 ## What is this?
+Skeletor is a small CLI tool that helps designers and engineers scaffold their component libraries in seconds.
 
-This is an attempt to bring designers and developers a faster way to scaffold the frontend of their design system. While there are various great stacks out there, bootstrapping a simple React component library is still _a bit of work_.
+As well as a quick way to setup a component library with all the tooling you love, there are (or will be) added utils to help with other arduous design systems tasks.
 
-What if there was a leg up though? Something that could quickly generate a fully working package with your custom preferences.
+The project currently only supports the building of React libraries written in TypeScript.
 
-This project is an attempt to build a CLI tool that can do that.
+The project is also **currently a WIP.**
 
-Potential uses:
+## Getting Started
+You can simply run the following in your preferred Terminal:
 
-- Bootstrap a simple UI library with all deps and opinionated folder structure.
-  - Down the line perhaps add support for things like Headless UI or Radix.
-- Generate items such as design tokens.
-  - This could be done by providing hex values as input and Skeletor generating it toward a colour scale.
-  - Potentially Tailwind config via a series of questions.
-- Quickly bootstrap a design system mono repo using something like Turbo or T3 Stack Turbo?
+```
+npm install -g @kemal.earth/skeletor-cli
+```
 
-The project is **currently WIP**.
+Basic usage:
+
+```
+skeletor generate:ui
+```
+
+After that Skeletor will prompt you to navigate to your new library and run a simple `npm install`.
+
+Optionally you can include a library like Tailwind by passing a simple flag:
+
+```
+skeletor generate:ui --with-tailwind
+```
+
+Congrats! You just spun up a React component library in seconds. 🎉
+
+## Roadmap
+Below is a high level roadmap of what's been done so far and potential things to come in the future.
+
+- [x] Generate component library (React & TypeScript).
+- [x] Add Tailwind support.
+- [ ] Add Styled Components support.
+- [ ] Add Radix UI support.
+- [ ] What next?
+
 
 ## Contributing
-
 The project is open for contributions, but it is currently in an exploratory state. Open for ideas on what else this tiny tool can take care of.
 
 Contribution Guide (Coming soon!)
+
+
+## Contact
+This project is maintained by me, [Kemal](https://kemal.earth). If you have any questions, feel free to open an issue in this repo! :) 
 
 For now ✌️
