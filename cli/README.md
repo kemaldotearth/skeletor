@@ -15,6 +15,7 @@
 </div>
 
 ## What is this?
+
 Skeletor is a small CLI tool that helps designers and engineers scaffold their component libraries in seconds.
 
 As well as a quick way to setup a component library with all the tooling you love, there are (or will be) added utils to help with other arduous design systems tasks.
@@ -24,6 +25,7 @@ The project currently only supports the building of React libraries written in T
 The project is also **currently a WIP.**
 
 ## Getting Started
+
 You can simply run the following in your preferred Terminal:
 
 ```
@@ -47,6 +49,7 @@ skeletor generate:ui --with-tailwind
 Congrats! You just spun up a React component library in seconds. 🎉
 
 ## Roadmap
+
 Below is a high level roadmap of what's been done so far and potential things to come in the future.
 
 - [x] Generate component library (React & TypeScript).
@@ -55,14 +58,14 @@ Below is a high level roadmap of what's been done so far and potential things to
 - [ ] Add Radix UI support.
 - [ ] What next?
 
-
 ## Contributing
+
 The project is open for contributions, but it is currently in an exploratory state. Open for ideas on what else this tiny tool can take care of.
 
 Contribution Guide (Coming soon!)
 
-
 ## Contact
-This project is maintained by me, [Kemal](https://kemal.earth). If you have any questions, feel free to open an issue in this repo! :) 
+
+This project is maintained by me, [Kemal](https://kemal.earth). If you have any questions, feel free to open an issue in this repo! :)
 
 For now ✌️

@@ -40,6 +40,7 @@ program.version('0.1.0', '-v, --version', 'Logs current version.');
 program
   .command('generate:ui')
   .option('--with-tailwind', 'Adds Tailwind CSS to your package.')
+  .option('--with-styled-components', 'Adds Styled Components to your package.')
   .action(async (options) => {
     updateSpinnerText('💀 Skeletor is generating your package...');
     // await promiseResolve(3000);
@@ -47,6 +48,7 @@ program
 
     const libName = 'skeletor-ui';
     const includeTailwind = options.withTailwind;
+    const includeStyledComponents = options.withStyledComponents;
 
     // 1. Create a directory for the package
     updateSpinnerText('📁 Setting up your package directory...');
@@ -58,7 +60,7 @@ program
     updateSpinnerText('😵‍💫 Spinning up a package.json...');
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    createPackageJson(libName, includeTailwind);
+    createPackageJson(libName, includeTailwind, includeStyledComponents);
 
     // 3. Create a tsconfig.json file
     updateSpinnerText('💀 Adding a tsconfig too...');
@@ -74,7 +76,7 @@ program
 
     // 5. Create an index.ts file
     createIndexFile(libName, includeTailwind);
-    createButtonComponent(libName);
+    createButtonComponent(libName, includeStyledComponents);
     createClassNamesUtil(libName);
     if (includeTailwind) createGlobalsCss(libName);
 
@@ -82,7 +84,7 @@ program
     updateSpinnerText('🧻 Adding a rollup.config.js...');
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    createRollupConfig(libName, includeTailwind);
+    createRollupConfig(libName, includeTailwind, includeStyledComponents);
 
     // 7. Create extra files
     if (includeTailwind) {

@@ -3,6 +3,7 @@ import * as fs from 'fs';
 export const createPackageJson = (
   libName: string,
   includeTailwind: boolean,
+  includeStyledComponents: boolean,
 ) => {
   fs.writeFileSync(
     `${libName}/package.json`,
@@ -46,6 +47,11 @@ export const createPackageJson = (
             postcss: '^8.3.11',
             autoprefixer: '^10.3.7',
             'rollup-plugin-postcss': '^4.0.0',
+          }),
+          ...(includeStyledComponents && {
+            'styled-components': '^5.3.3',
+            'rollup-plugin-styled-components': '^1.5.1',
+            '@types/styled-components': '^5.1.15',
           }),
         },
       },
@@ -112,19 +118,45 @@ export const createIndexFile = (libName: string, includeTailwind: boolean) => {
   );
 };
 
-export const createButtonComponent = (libName: string) => {
+export const createButtonComponent = (
+  libName: string,
+  includeStyledComponents: boolean,
+) => {
   fs.writeFileSync(
     `${libName}/src/components/Button/index.tsx`,
     `
     import React from 'react';
+    ${includeStyledComponents && `import styled from 'styled-components';`}
 
     export interface ButtonProps {
       label: string;
     }
 
+    ${
+      includeStyledComponents &&
+      `
+      const StyledButton = styled.button\`
+        background-color: #0000FF;
+        color: #FFFFFF;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+      \`;
+    `
+    }
+
     export const Button = ({ label }: ButtonProps) => {
       return (
-        <button>{label}</button>
+        ${
+          includeStyledComponents
+            ? `
+          <StyledButton>{label}</StyledButton>
+        `
+            : `
+          <button>{label}</button>
+        `
+        }
       );
     };
   `,
@@ -156,6 +188,7 @@ export const createClassNamesUtil = (libName: string) => {
 export const createRollupConfig = (
   libName: string,
   includeTailwind: boolean,
+  includeStyledComponents: boolean,
 ) => {
   fs.writeFileSync(
     `${libName}/rollup.config.js`,
@@ -168,6 +201,10 @@ export const createRollupConfig = (
     import babel from '@rollup/plugin-babel';
     import pkg from './package.json';
     ${includeTailwind && `import postcss from "rollup-plugin-postcss";`}
+    ${
+      includeStyledComponents &&
+      `import styledComponents from 'rollup-plugin-styled-components';`
+    }
 
     export default [
       {
@@ -202,6 +239,7 @@ export const createRollupConfig = (
               },
           }),`
           }
+          ${includeStyledComponents && `styledComponents(),`}
           typescript({
             tsconfig: './tsconfig.json',
           }),
