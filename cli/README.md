@@ -55,6 +55,7 @@ Below is a high level roadmap of what's been done so far and potential things to
 - [x] Generate component library (React & TypeScript).
 - [x] Add Tailwind support.
 - [x] Add Styled Components support.
+- [ ] Add Storybook support.
 - [ ] Add Radix UI support.
 - [ ] What next?
 
