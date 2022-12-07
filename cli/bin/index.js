@@ -7125,7 +7125,7 @@ var fs2 = __toESM(require("fs"));
 
 // src/utils/installers.ts
 var fs = __toESM(require("fs"));
-var createPackageJson = (libName, includeTailwind) => {
+var createPackageJson = (libName, includeTailwind, includeStyledComponents) => {
   fs.writeFileSync(
     `${libName}/package.json`,
     JSON.stringify(
@@ -7143,7 +7143,7 @@ var createPackageJson = (libName, includeTailwind) => {
         },
         author: "skeletor-cli",
         license: "UNLICENSED",
-        devDependencies: __spreadValues({
+        devDependencies: __spreadValues(__spreadValues({
           "@babel/core": "^7.14.3",
           "@babel/preset-env": "^7.14.2",
           "@babel/preset-react": "^7.13.13",
@@ -7167,6 +7167,10 @@ var createPackageJson = (libName, includeTailwind) => {
           postcss: "^8.3.11",
           autoprefixer: "^10.3.7",
           "rollup-plugin-postcss": "^4.0.0"
+        }), includeStyledComponents && {
+          "styled-components": "^5.3.3",
+          "@types/styled-components": "^5.1.15",
+          "babel-plugin-styled-components": "^1.13.3"
         })
       },
       null,
@@ -7199,7 +7203,7 @@ var createTsConfig = (libName) => {
           skipLibCheck: true,
           emitDeclarationOnly: true
         },
-        include: ["src/**/*"],
+        include: ["src/**/*.ts", "src/**/*.tsx"],
         exclude: ["node_modules", "dist"]
       },
       null,
@@ -7219,27 +7223,40 @@ var createFolderStructure = (libName, includeTailwind) => {
 var createIndexFile = (libName, includeTailwind) => {
   fs.writeFileSync(
     `${libName}/src/index.ts`,
-    `
-    ${includeTailwind && `import './styles/globals.css';`}
-    export { default as Button, ButtonProps } from './components/Button/index.tsx';
+    `${includeTailwind ? `import './styles/globals.css';` : ""}
+  export { default as Button, ButtonProps } from './components/Button/index';
     `
   );
 };
-var createButtonComponent = (libName) => {
+var createButtonComponent = (libName, includeStyledComponents) => {
   fs.writeFileSync(
     `${libName}/src/components/Button/index.tsx`,
     `
-    import React from 'react';
+import React from 'react';
+${includeStyledComponents && `import styled from 'styled-components';`}
 
-    export interface ButtonProps {
-      label: string;
-    }
+export interface ButtonProps {
+  label: string;
+}
 
-    export const Button = ({ label }: ButtonProps) => {
-      return (
-        <button>{label}</button>
-      );
-    };
+${includeStyledComponents && `
+const StyledButton = styled.button\`
+  background-color: #0000FF;
+  color: #FFFFFF;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+\`;
+`}
+
+const Button = ({ label }: ButtonProps) => {
+  return (
+    ${includeStyledComponents ? `<StyledButton>{label}</StyledButton>` : `<button>{label}</button>`}
+  );
+};
+
+export default Button;
   `
   );
 };
@@ -7247,9 +7264,9 @@ var createGlobalsCss = (libName) => {
   fs.writeFileSync(
     `${libName}/src/styles/globals.css`,
     `
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
   `
   );
 };
@@ -7257,9 +7274,9 @@ var createClassNamesUtil = (libName) => {
   fs.writeFileSync(
     `${libName}/src/utils/classnames.ts`,
     `
-    export function classnames(...classes: unknown[]) {
-      return classes.filter(Boolean).join(' ');
-    }
+export function classnames(...classes: unknown[]) {
+  return classes.filter(Boolean).join(' ');
+}
   `
   );
 };
@@ -7305,7 +7322,7 @@ var createRollupConfig = (libName, includeTailwind) => {
               inject: {
                 insertAt: 'top',
               },
-          }),`}
+          }),`},
           typescript({
             tsconfig: './tsconfig.json',
           }),
@@ -7362,47 +7379,51 @@ var createGitIgnore = (libName) => {
     `${libName}/.gitignore`,
     `# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-  # dependencies
-  /node_modules
-  /.pnp
-  .pnp.js
-  
-  # testing
-  /coverage
-  
-  # next.js
-  /.next/
-  /out/
-  
-  # production
-  /build
-  
-  # misc
-  .DS_Store
-  *.pem
-  
-  # debug
-  npm-debug.log*
-  yarn-debug.log*
-  yarn-error.log*
-  
-  # local env files
-  .env.local
-  .env.development.local
-  .env.test.local
-  .env.production.local
-  
-  # vercel
-  .vercel
-`
+    # dependencies
+    /node_modules
+    /.pnp
+    .pnp.js
+    
+    # testing
+    /coverage
+    
+    # next.js
+    /.next/
+    /out/
+    
+    # production
+    /build
+    
+    # misc
+    .DS_Store
+    *.pem
+    
+    # debug
+    npm-debug.log*
+    yarn-debug.log*
+    yarn-error.log*
+    
+    # local env files
+    .env.local
+    .env.development.local
+    .env.test.local
+    .env.production.local
+    
+    # vercel
+    .vercel
+  `
   );
 };
-var createBabelConfig = (libName) => {
+var createBabelConfig = (libName, includeStyledComponents) => {
   fs.writeFileSync(
     `${libName}/.babelrc`,
     `
     {
-      "presets": ["@babel/preset-env", "@babel/preset-react"]
+      "presets": [
+        "@babel/preset-env", 
+        "@babel/preset-react",
+        ${includeStyledComponents && `"babel-plugin-styled-components",`}
+      ]
     }
   `
   );
@@ -8819,17 +8840,18 @@ program2.description(
 );
 program2.option("--verbose", "Verbose logging.");
 program2.version("0.1.0", "-v, --version", "Logs current version.");
-program2.command("generate:ui").option("--with-tailwind", "Adds Tailwind CSS to your package.").action((options) => __async(exports, null, function* () {
+program2.command("generate:ui").option("--with-tailwind", "Adds Tailwind CSS to your package.").option("--with-styled-components", "Adds Styled Components to your package.").action((options) => __async(exports, null, function* () {
   updateSpinnerText("\u{1F480} Skeletor is generating your package...");
   yield new Promise((resolve) => setTimeout(resolve, 2e3));
   const libName = "skeletor-ui";
   const includeTailwind = options.withTailwind;
+  const includeStyledComponents = options.withStyledComponents;
   updateSpinnerText("\u{1F4C1} Setting up your package directory...");
   yield new Promise((resolve) => setTimeout(resolve, 2e3));
   fs2.mkdirSync(libName);
   updateSpinnerText("\u{1F635}\u200D\u{1F4AB} Spinning up a package.json...");
   yield new Promise((resolve) => setTimeout(resolve, 2e3));
-  createPackageJson(libName, includeTailwind);
+  createPackageJson(libName, includeTailwind, includeStyledComponents);
   updateSpinnerText("\u{1F480} Adding a tsconfig too...");
   yield new Promise((resolve) => setTimeout(resolve, 2e3));
   createTsConfig(libName);
@@ -8837,7 +8859,7 @@ program2.command("generate:ui").option("--with-tailwind", "Adds Tailwind CSS to 
   yield new Promise((resolve) => setTimeout(resolve, 4e3));
   createFolderStructure(libName, includeTailwind);
   createIndexFile(libName, includeTailwind);
-  createButtonComponent(libName);
+  createButtonComponent(libName, includeStyledComponents);
   createClassNamesUtil(libName);
   if (includeTailwind)
     createGlobalsCss(libName);
@@ -8850,10 +8872,14 @@ program2.command("generate:ui").option("--with-tailwind", "Adds Tailwind CSS to 
     createTailwindConfig(libName);
     createPostCssConfig(libName);
   }
+  if (includeStyledComponents) {
+    updateSpinnerText("\u{1F485} Setting up Styled Components...");
+    yield new Promise((resolve) => setTimeout(resolve, 4e3));
+  }
   updateSpinnerText("\u{1F480}  Wrapping up!");
   yield new Promise((resolve) => setTimeout(resolve, 2e3));
   createGitIgnore(libName);
-  createBabelConfig(libName);
+  createBabelConfig(libName, includeStyledComponents);
   updateSpinnerText(`\u{1F4C4} Oh, don't forget to add a README.md!`);
   yield new Promise((resolve) => setTimeout(resolve, 2e3));
   createReadme(libName);
