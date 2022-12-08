@@ -15,6 +15,7 @@ import {
   createGitIgnore,
   createBabelConfig,
   createReadme,
+  createStoryBookConfig,
 } from './utils/installers';
 // import { promiseResolve } from './utils/helpers';
 import { updateSpinnerText, spinnerSuccess } from './utils/spinners';
@@ -40,6 +41,7 @@ program
   .command('generate:ui')
   .option('--with-tailwind', 'Adds Tailwind CSS to your package.')
   .option('--with-styled-components', 'Adds Styled Components to your package.')
+  .option('--with-storybook', 'Adds Storybook to your package.')
   .action(async (options) => {
     updateSpinnerText('💀 Skeletor is generating your package...');
     // await promiseResolve(3000);
@@ -48,6 +50,7 @@ program
     const libName = 'skeletor-ui';
     const includeTailwind = options.withTailwind;
     const includeStyledComponents = options.withStyledComponents;
+    const includeStorybook = options.withStorybook;
 
     // 1. Create a directory for the package
     updateSpinnerText('📁 Setting up your package directory...');
@@ -71,7 +74,7 @@ program
     updateSpinnerText('👷‍♀️ Crafting your first components...');
     await new Promise((resolve) => setTimeout(resolve, 4000));
 
-    createFolderStructure(libName, includeTailwind);
+    createFolderStructure(libName, includeTailwind, includeStorybook);
 
     // 5. Create an index.ts file
     createIndexFile(libName, includeTailwind);
@@ -85,7 +88,7 @@ program
 
     createRollupConfig(libName, includeTailwind);
 
-    // 7. Create extra files
+    // 7. Create flagged files
     if (includeTailwind) {
       updateSpinnerText('💨 Setting up TailwindCSS...');
       await new Promise((resolve) => setTimeout(resolve, 4000));
@@ -97,6 +100,13 @@ program
     if (includeStyledComponents) {
       updateSpinnerText('💅 Setting up Styled Components...');
       await new Promise((resolve) => setTimeout(resolve, 4000));
+    }
+
+    if (includeStorybook) {
+      updateSpinnerText('📚 Setting up Storybook...');
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+
+      createStoryBookConfig(libName);
     }
 
     updateSpinnerText('💀  Wrapping up!');
