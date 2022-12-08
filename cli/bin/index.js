@@ -7366,11 +7366,18 @@ var createPackageJson = (
         module: 'dist/esm/index.js',
         files: ['dist'],
         types: './dist/index.d.ts',
-        scripts: {
-          build:
-            'rimraf dist && tsc --emitDeclarationOnly && NODE_ENV=production rollup --config',
-          tsc: 'tsc',
-        },
+        scripts: __spreadValues(
+          {
+            build:
+              'rimraf dist && tsc --emitDeclarationOnly && NODE_ENV=production rollup --config',
+            tsc: 'tsc',
+          },
+          includeStorybook && {
+            storybook: 'start-storybook -p 6006',
+            'build-storybook': 'build-storybook',
+            'deploy-storybook': 'storybook-to-ghpages',
+          },
+        ),
         author: 'skeletor-cli',
         license: 'UNLICENSED',
         devDependencies: __spreadValues(
