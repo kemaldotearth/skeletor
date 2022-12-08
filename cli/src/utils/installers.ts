@@ -4,6 +4,7 @@ export const createPackageJson = (
   libName: string,
   includeTailwind: boolean,
   includeStyledComponents: boolean,
+  includeStorybook: boolean,
 ) => {
   fs.writeFileSync(
     `${libName}/package.json`,
@@ -47,11 +48,23 @@ export const createPackageJson = (
             postcss: '^8.3.11',
             autoprefixer: '^10.3.7',
             'rollup-plugin-postcss': '^4.0.0',
+            '@storybook/addon-postcss': '^3.0.0',
           }),
           ...(includeStyledComponents && {
             'styled-components': '^5.3.3',
             '@types/styled-components': '^5.1.15',
             'babel-plugin-styled-components': '^1.13.3',
+          }),
+          ...(includeStorybook && {
+            '@storybook/addon-actions': '^6.3.12',
+            '@storybook/addon-essentials': '^6.3.12',
+            '@storybook/addon-links': '^6.3.12',
+            '@storybook/addon-interactions': '^6.3.12',
+            '@storybook/addon-themes': '^6.3.12',
+            '@storybook/react': '^6.3.12',
+            '@storybook/dark-mode': '^6.3.12',
+            '@storybook/storybook-deployer': '^2.8.7',
+            '@storybook/testing-library': '^0.0.1-alpha.1',
           }),
         },
       },
@@ -358,13 +371,64 @@ export const createReadme = (libName: string) => {
   );
 };
 
-export const createStoryBookConfig = (libName: string) => {
+export const createStoryBookConfig = (
+  libName: string,
+  includeTailwind: boolean,
+) => {
   fs.writeFileSync(
     `${libName}/.storybook/main.js`,
 
     `module.exports = {
       stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
-      addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+      addons: [
+        '@storybook/addon-links', 
+        '@storybook/addon-essentials', 
+        '@storybook/addon-interactions', 
+        '@storybook/dark-mode',
+        ${
+          includeTailwind &&
+          `
+        {
+          name: '@storybook/addon-postcss',
+          options: {
+            postcssLoaderOptions: {
+              implementation: require('postcss'),
+            },
+          },
+        },
+        `
+        }
+      ],
+      framework: '@storybook/react',
     };`,
+  );
+
+  fs.writeFileSync(
+    `${libName}/.storybook/preview.js`,
+    `
+    import '../src/styles/global.css';
+
+    export const parameters = {
+      actions: { argTypesRegex: "^on[A-Z].*" },
+      darkMode: {
+        darkClass: 'dark',
+        classTarget: 'html',
+        stylePreview: true
+      }
+    }
+    `,
+  );
+
+  fs.writeFileSync(
+    `${libName}/.storybook/manager.js`,
+    `
+    import { addons } from '@storybook/addons';
+
+    addons.setConfig({
+      sidebar: {
+        showRoots: true,
+      },
+    });
+    `,
   );
 };

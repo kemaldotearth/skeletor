@@ -62,7 +62,12 @@ program
     updateSpinnerText('😵‍💫 Spinning up a package.json...');
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    createPackageJson(libName, includeTailwind, includeStyledComponents);
+    createPackageJson(
+      libName,
+      includeTailwind,
+      includeStyledComponents,
+      includeStorybook,
+    );
 
     // 3. Create a tsconfig.json file
     updateSpinnerText('💀 Adding a tsconfig too...');
@@ -106,7 +111,7 @@ program
       updateSpinnerText('📚 Setting up Storybook...');
       await new Promise((resolve) => setTimeout(resolve, 4000));
 
-      createStoryBookConfig(libName);
+      createStoryBookConfig(libName, includeTailwind);
     }
 
     updateSpinnerText('💀  Wrapping up!');
