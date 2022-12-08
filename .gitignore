@@ -33,4 +33,5 @@ yarn-error.log*
 .turbo
 
 # bin
-bin/
+bin
+cli/bin
