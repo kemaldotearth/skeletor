@@ -83,7 +83,7 @@ program
 
     // 5. Create an index.ts file
     createIndexFile(libName, includeTailwind);
-    createButtonComponent(libName, includeStyledComponents);
+    createButtonComponent(libName, includeStyledComponents, includeStorybook);
     createClassNamesUtil(libName);
     if (includeTailwind) createGlobalsCss(libName);
 

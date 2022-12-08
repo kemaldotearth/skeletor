@@ -7242,7 +7242,7 @@ var createIndexFile = (libName, includeTailwind) => {
     `
   );
 };
-var createButtonComponent = (libName, includeStyledComponents) => {
+var createButtonComponent = (libName, includeStyledComponents, includeStorybook) => {
   fs.writeFileSync(
     `${libName}/src/components/Button/index.tsx`,
     `
@@ -7273,6 +7273,27 @@ const Button = ({ label }: ButtonProps) => {
 export default Button;
   `
   );
+  if (includeStorybook) {
+    fs.writeFileSync(
+      `${libName}/src/components/Button/Button.stories.tsx`,
+      `
+import React from 'react';
+import { Story, Meta } from '@storybook/react/types-6-0';
+import Button, { ButtonProps } from './index';
+
+export default {
+  title: 'Example/Button',
+  component: Button,
+} as Meta;
+
+const Template: Story<ButtonProps> = (args) => <Button {...args} />;
+export const Primary = Template.bind({});
+Primary.args = {
+  label: 'Button',
+};
+    `
+    );
+  }
 };
 var createGlobalsCss = (libName) => {
   fs.writeFileSync(
@@ -8931,7 +8952,7 @@ program2.command("generate:ui").option("--with-tailwind", "Adds Tailwind CSS to 
   yield new Promise((resolve) => setTimeout(resolve, 4e3));
   createFolderStructure(libName, includeTailwind, includeStorybook);
   createIndexFile(libName, includeTailwind);
-  createButtonComponent(libName, includeStyledComponents);
+  createButtonComponent(libName, includeStyledComponents, includeStorybook);
   createClassNamesUtil(libName);
   if (includeTailwind)
     createGlobalsCss(libName);

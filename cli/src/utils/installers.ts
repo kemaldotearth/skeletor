@@ -137,6 +137,7 @@ export const createIndexFile = (libName: string, includeTailwind: boolean) => {
 export const createButtonComponent = (
   libName: string,
   includeStyledComponents: boolean,
+  includeStorybook: boolean,
 ) => {
   fs.writeFileSync(
     `${libName}/src/components/Button/index.tsx`,
@@ -175,6 +176,28 @@ const Button = ({ label }: ButtonProps) => {
 export default Button;
   `,
   );
+
+  if (includeStorybook) {
+    fs.writeFileSync(
+      `${libName}/src/components/Button/Button.stories.tsx`,
+      `
+import React from 'react';
+import { Story, Meta } from '@storybook/react/types-6-0';
+import Button, { ButtonProps } from './index';
+
+export default {
+  title: 'Example/Button',
+  component: Button,
+} as Meta;
+
+const Template: Story<ButtonProps> = (args) => <Button {...args} />;
+export const Primary = Template.bind({});
+Primary.args = {
+  label: 'Button',
+};
+    `,
+    );
+  }
 };
 
 export const createGlobalsCss = (libName: string) => {
