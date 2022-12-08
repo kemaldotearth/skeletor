@@ -53,11 +53,13 @@ Congrats! You just spun up a React component library in seconds. 🎉
 Below is a high level roadmap of what's been done so far and potential things to come in the future.
 
 - [x] Generate component library (React & TypeScript).
-- [x] Add Tailwind support.
-- [x] Add Styled Components support.
-- [ ] Add Storybook support.
+- [x] Add Tailwind support - `--with-tailwind`.
+- [x] Add Styled Components support - `--with-styled-components`.
+- [x] Add Storybook support - `--with-storybook`.
 - [ ] Add Radix UI support.
 - [ ] What next?
+
+⚠️ **Note:** Whilst it is theoretically possible you should be able to run all flags with `generate:ui`, the library is still experimental so something _may_ break. If it does, feel free to open an issue!
 
 ## Contributing
 
